@@ -1,0 +1,25 @@
+{
+  "name": "dom-event",
+  "version": "0.1.0",
+  "description": "low level helper for creating dom event objects",
+  "main": "src/index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "*",
+    "chai": "*",
+    "laissez-faire": "*"
+  },
+  "scripts" : {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jkroso/dom-event.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jkroso/dom-event/issues"
+  },
+  "keywords": ["dom","event","factory","custom"],
+  "author": "Jakeb Rosoman",
+  "license": "MIT"
+}

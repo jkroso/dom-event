@@ -1,0 +1,16 @@
+{
+  "name": "dom-event",
+  "repo": "jkroso/dom-event",
+  "description": "low level helper for creating dom event objects",
+  "version": "0.1.0",
+  "keywords": ["dom","event","factory","custom"],
+  "dependencies": {
+    "jkroso/keycode": "*"
+  },
+  "main": "src/index.js",
+  "scripts": [
+	  "src/index.js"
+  ],
+  "styles":[],
+  "license": "MIT"
+}
