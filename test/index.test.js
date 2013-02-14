@@ -33,9 +33,11 @@ describe('key(type, key, options)', function () {
 		var e = events.key('press', 'a')
 		e.keyCode.should.equal(65)
 		e.charCode.should.equal(97)
+
 		var e = events.key('down', 'a')
 		e.keyCode.should.equal(65)
 		e.charCode.should.equal(97)
+		
 		var e = events.key('up', 'a')
 		e.keyCode.should.equal(65)
 		e.charCode.should.equal(97)
