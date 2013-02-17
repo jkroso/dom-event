@@ -73,7 +73,7 @@ exports.mouse = function (type, o) {
   e.initMouseEvent(
     type,
     o.bubbles !== false, // canBubble
-    o.cancelable === false, // cancelable
+    o.cancelable !== false, // cancelable
     window, // 'AbstractView'
     o.clicks || (type === 'dbclick' ? 2 : 0), // click count
     o.screenX || 0, // screenX
@@ -106,7 +106,7 @@ exports.custom = function (type, o) {
   o || (o = {})
   var e = new Event(type, {
     bubbles: o.bubbles !== false,
-    cancelable: o.cancelable === false
+    cancelable: o.cancelable !== false
   })
   for (var prop in o) e[prop] = o[prop]
   return e

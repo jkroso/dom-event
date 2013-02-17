@@ -2,7 +2,7 @@
   "name": "dom-event",
   "repo": "jkroso/dom-event",
   "description": "low level helper for creating dom event objects",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "keywords": ["dom","event","factory","custom"],
   "dependencies": {
     "jkroso/keycode": "*"
