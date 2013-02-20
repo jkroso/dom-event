@@ -4,9 +4,9 @@ var Event = window.Event
 /**
  * Create a keyboard event
  *
- *   key('press', 'enter')
- *   key('down', 'caps lock')
- *   key('up', 'k')
+ *   key('keypress', 'enter')
+ *   key('keydown', 'caps lock')
+ *   key('keyup', 'k')
  *
  * @param {String} type 'up', 'down', or 'press'
  * @param {String} key the key being pressed
@@ -16,7 +16,6 @@ var Event = window.Event
 
 exports.key = function (type, key, o) {
   o || (o = {})
-  if (type.slice(0, 3) !== 'key') type = 'key' + type
   var keycode = code[key]
   if (keycode === undefined) throw new Error('invalid key: '+key)
   key = key.length === 1 ? key.charCodeAt(0) : 0
@@ -56,8 +55,8 @@ exports.key = function (type, key, o) {
 /**
  * Create a native mouse event
  *
- *   mouse('move', {clientX: 50, clientY: 50})
- *   mouse('move') // apply defualts
+ *   mouse('mousemove', {clientX: 50, clientY: 50})
+ *   mouse('mousemove') // apply defualts
  * 
  * @param {String} type of mouse event
  * @param {Object} [o] options
@@ -65,27 +64,26 @@ exports.key = function (type, key, o) {
  */
 
 exports.mouse = function (type, o) {
-  if (type[0] !== 'm' && type !== 'click' && type !== 'dblclick') type = 'mouse'+type
   var e = document.createEvent('MouseEvents')
   o || (o = {})
 
   // https://developer.mozilla.org/en/DOM/event.initMouseEvent
   e.initMouseEvent(
     type,
-    o.bubbles !== false, // canBubble
-    o.cancelable !== false, // cancelable
-    window, // 'AbstractView'
+    o.bubbles !== false,                      // canBubble
+    o.cancelable !== false,                   // cancelable
+    window,                                   // 'AbstractView'
     o.clicks || (type === 'dbclick' ? 2 : 0), // click count
-    o.screenX || 0, // screenX
-    o.screenY || 0, // screenY
-    o.clientX || 0, // clientX
-    o.clientY || 0, // clientY
-    o.ctrl === true, // ctrl
-    o.alt === true, // alt
-    o.shift === true, // shift
-    o.meta === true, // meta
-    typeof o.button === 'number' ? o.button : 1, // mouse button
-    null // relatedTarget
+    o.screenX || 0,                           // screenX
+    o.screenY || 0,                           // screenY
+    o.clientX || 0,                           // clientX
+    o.clientY || 0,                           // clientY
+    o.ctrl === true,                          // ctrl
+    o.alt === true,                           // alt
+    o.shift === true,                         // shift
+    o.meta === true,                          // meta
+    o.button || 0,                            // mouse button defaults to left
+    null                                      // relatedTarget
   )
   return e
 }

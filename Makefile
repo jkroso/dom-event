@@ -1,4 +1,4 @@
-all: clean build test docs
+all: build docs
 
 build: install
 	@component build -dv

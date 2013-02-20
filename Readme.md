@@ -11,26 +11,26 @@ var event = require('dom-event')
   - [exports.mouse()](#exportsmousetypestringoobject)
   - [exports.custom()](#exportscustomtypestringoobject)
 
-## exports.key(type:String, key:String, o:Object)
+### exports.key(type:String, key:String, o:Object)
 
   Create a keyboard event
   
 ```js
-key('press', 'enter')
-key('down', 'caps lock')
-key('up', 'k')
+key('keypress', 'enter')
+key('keydown', 'caps lock')
+key('keyup', 'k')
 ```
 
-## exports.mouse(type:String, [o]:Object)
+### exports.mouse(type:String, [o]:Object)
 
   Create a native mouse event
   
 ```js
-mouse('move', {clientX: 50, clientY: 50})
-mouse('move') // apply defualts
+mouse('mousemove', {clientX: 50, clientY: 50})
+mouse('mousemove') // apply defualts
 ```
 
-## exports.custom(type:String, o:Object)
+### exports.custom(type:String, o:Object)
 
   Create a custom event
   
