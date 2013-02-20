@@ -80,11 +80,11 @@ exports.mouse = function (type, o) {
     o.screenY || 0, // screenY
     o.clientX || 0, // clientX
     o.clientY || 0, // clientY
-    o.ctrl !== false, // ctrl
-    o.alt !== false, // alt
-    o.shift !== false, // shift
-    o.meta !== false, // meta
-    o.button !== false, // mouse button
+    o.ctrl === true, // ctrl
+    o.alt === true, // alt
+    o.shift === true, // shift
+    o.meta === true, // meta
+    typeof o.button === 'number' ? o.button : 1, // mouse button
     null // relatedTarget
   )
   return e
