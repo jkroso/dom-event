@@ -1,6 +1,6 @@
 # dom-event
 
-low level helper for creating dom event objects
+low level helper for creating DOM event objects. It abstracts away the goofiness of the DOM api and browser quirks.
 
 ## API
 

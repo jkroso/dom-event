@@ -1,11 +1,40 @@
+## Available events
+
+- load
+- unload
+- abort
+- error
+- select
+- change
+- submit
+- reset
+- focus
+- blur
+- resize
+- scroll
+- input
+- click
+- dblclick
+- mousedown
+- mouseup
+- mouseover
+- mousemove
+- mouseout
+- contextmenu
+- keypress
+- keydown
+- keyup
+
+Anything else is currently considered a custom event so doesn't get any special attributes or behaviour.
+
 ## Contributing
-Please do!
+There are many more "native" events which should be included. They haven't been added simply because I don't need them just yet. If you add something, e.g. mutation events, please submit a pull-request.
 
 ## Release History
 _(Nothing yet)_
 
 ## License
-Copyright (c) 2012 Jakeb Rosoman
+Copyright (c) 2013 Jakeb Rosoman
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation

@@ -1,53 +1,61 @@
 # dom-event
 
-low level helper for creating dom event objects
+low level helper for creating DOM event objects. It abstracts away the goofiness of the DOM api and browser quirks.
 
 ## API
 
 ```javascript
 var event = require('dom-event')
 ```
-  - [exports.key()](#exportskeytypestringkeystringoobject)
-  - [exports.mouse()](#exportsmousetypestringoobject)
-  - [exports.custom()](#exportscustomtypestringoobject)
+  - [event()](#event)
 
-### exports.key(type:String, key:String, o:Object)
+### event()
 
-  Create a keyboard event
+  Create a native DOM event
   
 ```js
-key('keypress', 'enter')
-key('keydown', 'caps lock')
-key('keyup', 'k')
+event('mousemove')
+event('keydown', { key: 'a' })
+event('user-login')
 ```
 
-### exports.mouse(type:String, [o]:Object)
+## Available events
 
-  Create a native mouse event
-  
-```js
-mouse('mousemove', {clientX: 50, clientY: 50})
-mouse('mousemove') // apply defualts
-```
+- load
+- unload
+- abort
+- error
+- select
+- change
+- submit
+- reset
+- focus
+- blur
+- resize
+- scroll
+- input
+- click
+- dblclick
+- mousedown
+- mouseup
+- mouseover
+- mousemove
+- mouseout
+- contextmenu
+- keypress
+- keydown
+- keyup
 
-### exports.custom(type:String, o:Object)
-
-  Create a custom event
-  
-```js
-custom('select', {item: item})
-custom('select', {bubbles: false}) // to prevent bubbling
-custom('select', {cancelable: false}) // to prevent bubbling
-```
+Anything else is currently considered a custom event so doesn't get any special attributes or behaviour.
 
 ## Contributing
-Please do!
+There are many more "native" events which should be included. They haven't been added simply because I don't need them just yet. If you add something, e.g. mutation events, please submit a pull-request.
 
 ## Release History
 _(Nothing yet)_
 
 ## License
-Copyright (c) 2012 Jakeb Rosoman
+Copyright (c) 2013 Jakeb Rosoman
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
