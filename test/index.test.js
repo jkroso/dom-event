@@ -1,55 +1,55 @@
-var should = chai.should()
-  , events = require('dom-event')
 
-function run (type, eventnames) {
-  eventnames.forEach(function (event) {
-    it('should create the ' + event + ' event', function(done){
-      exec(
-        events[type](event, type === 'key' ? 'a': null), 
-        function(e) { done() }
-      )
+var should = require('chai').should()
+  , event = require('../src')
+
+function run () {
+  for (var i = 0, len = arguments.length; i < len; i++) {
+    var name = arguments[i]
+    it('should work with ' + name, function(){
+      var a = document.createElement('a')
+      document.body.appendChild(a)
+      var count = 0
+      a.addEventListener(name, function(e){
+        count++
+      }, true)
+      a.dispatchEvent(event(name))
+      document.body.removeChild(a)
+      count.should.equal(1)
     })
-  })
-}
-
-function exec (event, cb) {
-  var a = document.createElement('a');
-  a.addEventListener(event.type, cb, true)
-  a.dispatchEvent(event)
+  }
 }
 
 describe('key(type, key, options)', function () {
   it('should have the correct keyCode and charCode', function () {
-    var e = events.key('keypress', 'a')
+    var e = event('keypress', {key: 'a'})
     e.keyCode.should.equal(65)
     e.charCode.should.equal(97)
 
-    var e = events.key('keydown', 'a')
+    var e = event('keydown', {key: 'a'})
     e.keyCode.should.equal(65)
     e.charCode.should.equal(97)
     
-    var e = events.key('keyup', 'a')
+    var e = event('keyup', {key: 'a'})
     e.keyCode.should.equal(65)
     e.charCode.should.equal(97)
   })
   
-  run('key', ['keydown', 'keyup', 'keypress'])
+  run('keydown', 'keyup', 'keypress')
   
-  it.skip('should create a KeyboardEvent (fails atm)', function () {
+  // chrome bug
+  it.skip('should create a KeyboardEvent', function () {
     events.key('keydown', 'a').should.be.an.instanceOf(KeyboardEvent)
   })
 })
 
-describe('mouse event', function() {
-  run('mouse', ['click', 'mousedown', 'mouseup', 'mousemove', 'mouseover', 'mouseout'])
+describe('mouse events', function() {
+  run('click', 'mousedown', 'mouseup', 'mousemove', 'mouseover', 'mouseout')
 })
 
-describe('.custom(type, options)', function () {
-  run('custom', ['login', 'logout', 'mousedown', 'keypress'])
-  it('should mix in all properties passed', function (done) {
-    exec(events.custom('test', {data:'no other'}), function (e) {
-      e.data.should.equal('no other')
-      done()
-    })
-  })
+describe('custom events', function () {
+  run('login', 'logout')
+})
+
+describe('html events', function () {
+  run('blur', 'change', 'focus')
 })

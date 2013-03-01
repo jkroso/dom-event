@@ -20,5 +20,11 @@
     "custom"
   ],
   "author": "Jakeb Rosoman",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "sourcegraph": "~0.5.0",
+    "chai": "~1.5.0",
+    "mocha": "~1.8.1",
+    "bigfile": "~0.3.0"
+  }
 }
