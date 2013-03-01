@@ -1,111 +1,201 @@
-var code = require('keycode').code
-var Event = window.Event
+
+var codes = require('keycode').codes
+  , Event = window.Event
 
 /**
- * Create a keyboard event
+ * Create a native DOM event
  *
- *   key('keypress', 'enter')
- *   key('keydown', 'caps lock')
- *   key('keyup', 'k')
+ *   event('mousemove')
+ *   event('keydown', { key: 'a' })
+ *   event('user-login')
  *
- * @param {String} type 'up', 'down', or 'press'
- * @param {String} key the key being pressed
- * @param {Object} o any options such as ctrl etc..
- * @return {KeyboardEvent}
+ * @param {String} type
+ * @param {Object} [options]
+ * @return {DomEvent}
  */
 
-exports.key = function (type, key, o) {
-  o || (o = {})
-  var keycode = code[key]
-  if (keycode === undefined) throw new Error('invalid key: '+key)
-  key = key.length === 1 ? key.charCodeAt(0) : 0
+function event(type, options){
+  return (make[type] || custom)(type, options || {})
+}
 
-  // Prefer custom events to avoid webkits bug https://bugs.webkit.org/show_bug.cgi?id=16735
-  if (Event) {
-    var e = new Event(type, {
-      bubbles: o.bubbles !== false,
-      cancelable: o.cancelable !== false
-    })
-    e.keyCode = keycode
-    e.charCode = key
-    e.shift = o.shift || false
-    e.meta = o.meta || false
-    e.ctrl = o.ctrl || false
-    e.alt = o.alt || false
-  } else {
-    var e = document.createEvent('KeyboardEvent')
-    // https://developer.mozilla.org/en/DOM/event.initKeyEvent
-    // https://developer.mozilla.org/en/DOM/KeyboardEvent
-    e[e.initKeyEvent ? 'initKeyEvent' : 'initKeyboardEvent'](
-      type,                   // DOMString typeArg
-      o.bubbles !== false,    // boolean canBubbleArg
-      o.cancelable !== false, // boolean cancelableArg
-      window,                 // Specifies UIEvent.view.
-      o.ctrl === true,        // ctrl
-      o.alt === true,         // alt
-      o.shift === true,       // shift
-      o.meta === true,        // meta
-      keycode,                // unsigned long keyCodeArg
-      key                     // unsigned long charCodeArg
-    )
-  }
-  return e
+/*!
+ * TODO: switch functions to fallbacks here
+ * if we are in an old IE
+ */
+
+var make = {
+  // html
+  load: html, 
+  unload: html, 
+  abort: html, 
+  error: html, 
+  select: html, 
+  change: html, 
+  submit: html, 
+  reset: html, 
+  focus: html, 
+  blur: html, 
+  resize: html, 
+  scroll: html, 
+  input: html, 
+  
+  // mouse
+  click: function(name, o){
+   'clicks' in o || (o.clicks = 1)
+    return mouse('click', o)
+  },
+  dblclick: function(name, o){
+    'clicks' in o || (o.clicks = 2)
+    return mouse('dblclick', o)
+  }, 
+  mousedown: mouse, 
+  mouseup: mouse, 
+  mouseover: mouse, 
+  mousemove: mouse, 
+  mouseout: mouse,
+  contextmenu: function(name, o){
+    'button' in o || (o.button = 2)
+    return mouse('contextmenu', o)
+  },
+
+  // keyboard
+  keypress: keyboard,
+  keydown: keyboard,
+  keyup: keyboard
 }
 
 /**
  * Create a native mouse event
  *
+ *   mouse('mousemove', {})
  *   mouse('mousemove', {clientX: 50, clientY: 50})
- *   mouse('mousemove') // apply defualts
  * 
- * @param {String} type of mouse event
- * @param {Object} [o] options
+ * @param {String} name
+ * @param {Object} o
  * @return {MouseEvent}
+ * @api private
  */
 
-exports.mouse = function (type, o) {
-  var e = document.createEvent('MouseEvents')
-  o || (o = {})
-
-  // https://developer.mozilla.org/en/DOM/event.initMouseEvent
-  e.initMouseEvent(
-    type,
-    o.bubbles !== false,                      // canBubble
-    o.cancelable !== false,                   // cancelable
-    window,                                   // 'AbstractView'
-    o.clicks || (type === 'dbclick' ? 2 : 0), // click count
-    o.screenX || 0,                           // screenX
-    o.screenY || 0,                           // screenY
-    o.clientX || 0,                           // clientX
-    o.clientY || 0,                           // clientY
-    o.ctrl === true,                          // ctrl
-    o.alt === true,                           // alt
-    o.shift === true,                         // shift
-    o.meta === true,                          // meta
-    o.button || 0,                            // mouse button defaults to left
-    null                                      // relatedTarget
+function mouse (name, o){
+  var event = document.createEvent('MouseEvents')
+  event.initMouseEvent(
+    name,
+    o.bubbles !== false,
+    o.cancelable !== false,
+    window,
+    o.clicks,
+    o.screenX || 0,
+    o.screenY || 0,
+    o.clientX || 0,
+    o.clientY || 0,
+    o.ctrl === true,
+    o.alt === true,
+    o.shift === true,
+    o.meta === true,
+    o.button || 0,
+    o.relatedTarget
   )
+  return event
+}
+
+/**
+ * Create a html document event
+ *
+ *   event('blur', {})
+ *   event('change', {bubbles: false})
+ *
+ * @param {String} name
+ * @param {Object} o
+ * @return {HTMLEvent}
+ * @api private
+ */
+
+function html (name, o){
+  var event = document.createEvent('HTMLEvents')
+  event.initEvent(name, 
+    o.bubbles !== false, 
+    o.cancelable !== false
+  )
+  return event
+}
+
+/**
+ * Create a keyboard event
+ *
+ *   event('keypress', {
+ *     key: 'enter'
+ *   })
+ *
+ * @param {String} type
+ * @param {Object} o
+ * @return {KeyboardEvent}
+ * @api private
+ */
+
+function keyboard(type, o) {
+  var key = o.key || 'a'
+  var keycode = codes[key]
+  if (!keycode) throw new Error('invalid key: '+key)
+
+  var charCode = key.length === 1 
+    ? key.charCodeAt(0) 
+    : 0
+
+  // Prefer custom events to avoid webkits bug 
+  // https://bugs.webkit.org/show_bug.cgi?id=16735
+  if (Event) {
+    var e = custom(type, o)
+    e.keyCode = keycode
+    e.charCode = charCode
+    e.shift = o.shift === true
+    e.meta = o.meta === true
+    e.ctrl = o.ctrl === true
+    e.alt = o.alt === true
+  } else {
+    var e = document.createEvent('KeyboardEvent')
+    e[e.initKeyEvent ? 'initKeyEvent' : 'initKeyboardEvent'](
+      type,
+      o.bubbles !== false,
+      o.cancelable !== false,
+      window,
+      o.ctrl === true,
+      o.alt === true,
+      o.shift === true,
+      o.meta === true,
+      keycode,
+      charCode
+    )
+  }
   return e
 }
+
 
 /**
  * Create a custom event
  *
- *   custom('select', {item: item})
- *   custom('select', {bubbles: false}) // to prevent bubbling
- *   custom('select', {cancelable: false}) // to prevent bubbling
+ *   custom('select', {
+ *     bubbles: false
+ *   })
  *
- * @param {String} type can be anthing
- * @param {Object} o custom properties you would like your event to have
+ * @param {String} name
+ * @param {Object} o
  * @return {Event}
+ * @api private
  */
 
-exports.custom = function (type, o) {
-  o || (o = {})
-  var e = new Event(type, {
+function custom(name, o) {
+  return new Event(name, {
     bubbles: o.bubbles !== false,
     cancelable: o.cancelable !== false
   })
-  for (var prop in o) e[prop] = o[prop]
-  return e
 }
+
+/*!
+ * Export event factory and helpers
+ */
+
+module.exports = event
+event.mouse = mouse
+event.keyboard = keyboard
+event.custom = custom
+event.html = html
