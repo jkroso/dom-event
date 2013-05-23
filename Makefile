@@ -1,12 +1,18 @@
+GRAPH=node_modules/.bin/sourcegraph.js -p nodeish,mocha
+COMPILE=node_modules/.bin/bigfile.js -p nodeish
+REPORTER=dot
 
-test/built.js: src/* test/*
-	@node_modules/.bin/sourcegraph.js test/browser.js \
-		--plugins mocha,nodeish,javascript \
-		| node_modules/.bin/bigfile \
-		 	--export null \
-		 	--plugins nodeish,javascript > test/built.js
+all: test/built.js
 
-Readme.md: docs/* src/*
-	@cat docs/head.md > $@
-	@dox --api < src/index.js >> $@
-	@cat docs/tail.md >> $@
+test:
+	@node_modules/.bin/mocha test/*.test.js \
+		--reporter $(REPORTER) \
+		--bail
+
+clean:
+	@rm -f test/built.js
+
+test/built.js: index.js test/*
+	@$(GRAPH) test/browser.js | $(COMPILE) -x null > $@
+
+.PHONY: all test clean
