@@ -1,13 +1,9 @@
 GRAPH=node_modules/.bin/sourcegraph.js -p nodeish,mocha
-COMPILE=node_modules/.bin/bigfile.js -p nodeish
+COMPILE=node_modules/.bin/_bigfile -p nodeish
 REPORTER=dot
 
 all: test/built.js
-
-test:
-	@node_modules/.bin/mocha test/*.test.js \
-		--reporter $(REPORTER) \
-		--bail
+	open test/index.html
 
 clean:
 	@rm -f test/built.js

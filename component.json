@@ -5,11 +5,10 @@
   "version": "0.3.0",
   "keywords": ["dom","event","factory","custom"],
   "dependencies": {
-    "jkroso/keycode": "*"
+    "jkroso/keycode": "0.1.0"
   },
   "scripts": [
 	  "index.js"
   ],
-  "styles":[],
   "license": "MIT"
 }
