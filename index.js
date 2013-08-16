@@ -1,6 +1,6 @@
 
 var codes = require('keycode').codes
-  , Event = window.Event
+var Event = window.Event
 
 /**
  * Create a native DOM event
@@ -25,20 +25,20 @@ function event(type, options){
 
 var make = {
   // html
-  load: html, 
-  unload: html, 
-  abort: html, 
-  error: html, 
-  select: html, 
-  change: html, 
-  submit: html, 
-  reset: html, 
-  focus: html, 
-  blur: html, 
-  resize: html, 
-  scroll: html, 
-  input: html, 
-  
+  load: html,
+  unload: html,
+  abort: html,
+  error: html,
+  select: html,
+  change: html,
+  submit: html,
+  reset: html,
+  focus: html,
+  blur: html,
+  resize: html,
+  scroll: html,
+  input: html,
+
   // mouse
   click: function(name, o){
    'clicks' in o || (o.clicks = 1)
@@ -47,11 +47,11 @@ var make = {
   dblclick: function(name, o){
     'clicks' in o || (o.clicks = 2)
     return mouse('dblclick', o)
-  }, 
-  mousedown: mouse, 
-  mouseup: mouse, 
-  mouseover: mouse, 
-  mousemove: mouse, 
+  },
+  mousedown: mouse,
+  mouseup: mouse,
+  mouseover: mouse,
+  mousemove: mouse,
   mouseout: mouse,
   contextmenu: function(name, o){
     'button' in o || (o.button = 2)
@@ -137,7 +137,7 @@ function keyboard(type, o) {
   var keycode = codes[key]
   if (!keycode) throw new Error('invalid key: '+key)
 
-  var charCode = key.length === 1 
+  var charCode = key.length === 1
     ? key.charCodeAt(0) 
     : 0
 
@@ -168,7 +168,6 @@ function keyboard(type, o) {
   }
   return e
 }
-
 
 /**
  * Create a custom event
