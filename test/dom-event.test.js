@@ -1,6 +1,6 @@
 
-var should = require('chai').should()
-  , event = require('..')
+var chai = require('./chai')
+var event = require('..')
 
 function run () {
   for (var i = 0, len = arguments.length; i < len; i++) {

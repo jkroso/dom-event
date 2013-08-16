@@ -3,12 +3,22 @@
   "repo": "jkroso/dom-event",
   "description": "low level helper for creating dom event objects",
   "version": "0.3.0",
-  "keywords": ["dom","event","factory","custom"],
+  "keywords": [
+    "dom",
+    "event",
+    "factory",
+    "custom"
+  ],
   "dependencies": {
     "jkroso/keycode": "0.1.0"
   },
+  "development": {
+    "visionmedia/mocha": "1.12.0",
+    "jkroso/serve": "1.4.8",
+    "chaijs/chai": "1.7.2"
+  },
   "scripts": [
-	  "index.js"
+    "index.js"
   ],
   "license": "MIT"
 }

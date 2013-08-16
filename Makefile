@@ -1,14 +1,20 @@
-GRAPH=node_modules/.bin/sourcegraph.js -p nodeish,mocha
-COMPILE=node_modules/.bin/_bigfile -p nodeish
 REPORTER=dot
 
-all: test/built.js
-	open test/index.html
+serve: node_modules
+	@node_modules/serve/bin/serve -Sloj
 
-clean:
-	@rm -f test/built.js
+test: node_modules
+	@node_modules/mocha/bin/_mocha test/*.test.js \
+		--reporter $(REPORTER) \
+		--timeout 500 \
+		--check-leaks \
+		--bail
 
-test/built.js: index.js test/*
-	@$(GRAPH) test/browser.js | $(COMPILE) -x null > $@
+node_modules: component.json package.json
+	@packin install \
+		--meta package.json,component.json,deps.json \
+		--folder node_modules \
+		--executables \
+		--no-retrace
 
-.PHONY: all test clean
+.PHONY: serve test

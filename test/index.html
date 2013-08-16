@@ -1,13 +1,22 @@
 <!doctype html>
 <html>
-	<head>
-		<title>DOM-event tests</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
-	</head>
-	<body>
-		<div id="mocha"></div>
-		<div id="target"></div>
-		<script src="built.js"></script>
-	</body>
+<head>
+	<title>dom-event tests</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="../node_modules/mocha/mocha.css">
+</head>
+<body>
+	<div id="mocha"></div>
+	<div id="target"></div>
+	<script>
+		var mocha = require('mocha')
+		mocha.setup('bdd')
+		mocha.timeout(200)
+
+		require('./dom-event.test')
+
+		mocha.run()
+	</script>
+</body>
 </html>
